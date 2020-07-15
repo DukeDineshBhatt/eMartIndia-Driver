@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    Button btn_start;
+    Button btn_start,btn_end;
     private static final int REQUEST_PERMISSIONS = 100;
     boolean boolean_permission;
     TextView tv_latitude, tv_longitude, tv_address,tv_area,tv_locality;
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         tv_latitude = (TextView) findViewById(R.id.tv_latitude);
         tv_longitude = (TextView) findViewById(R.id.tv_longitude);
         tv_area = (TextView)findViewById(R.id.tv_area);
+        btn_end = findViewById(R.id.btn_end);
         tv_locality = (TextView)findViewById(R.id.tv_locality);
         geocoder = new Geocoder(this, Locale.getDefault());
         mPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -73,12 +74,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         fn_permission();
 
-        registerReceiver(broadcastReceiver, new IntentFilter(GoogleService.str_receiver));
-        tv_latitude.setText(latitude+"");
-        tv_longitude.setText(longitude+"");
-        tv_address.getText();
+        btn_end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try {
+
+                    unregisterReceiver(broadcastReceiver);
+                    Toast.makeText(getApplicationContext(), "Tracking ends successfully", Toast.LENGTH_SHORT).show();
+
+                }catch (Exception e1) {
+
+                    Toast.makeText(getApplicationContext(), "Tracking ends successfully", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        });
+
     }
 
     private void fn_permission() {
@@ -160,25 +177,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        registerReceiver(broadcastReceiver, new IntentFilter(GoogleService.str_receiver));
-        tv_latitude.setText(latitude+"");
-        tv_longitude.setText(longitude+"");
-        tv_address.getText();
-    }
 
     @Override
     protected void onPause() {
         super.onPause();
-       // unregisterReceiver(broadcastReceiver);
 
-        registerReceiver(broadcastReceiver, new IntentFilter(GoogleService.str_receiver));
-        tv_latitude.setText(latitude+"");
-        tv_longitude.setText(longitude+"");
-        tv_address.getText();
+
+
     }
 
 
